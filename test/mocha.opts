@@ -1,0 +1,5 @@
+--recursive
+--check-leaks
+--require ./test/mocha-bootstrap.js
+--reporter spec
+--colors

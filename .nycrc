@@ -1,0 +1,24 @@
+{
+	"lines": 100,
+	"statements": 100,
+	"functions": 100,
+	"branches": 100,
+	"include": [
+		"src/**/*.js"
+	],
+	"exclude": [
+	],
+	"reporter": [
+		"json",
+		"text",
+		"text-summary",
+		"html"
+	],
+	"all": true,
+	"check-coverage": true,
+	"produce-source-map": false,
+	"per-file": true,
+	"report-dir": "./coverage",
+	"sourceMap": false,
+	"instrument": true
+}
