@@ -14,6 +14,7 @@
   },
   "scripts": {
     "lint": "./scripts/lint.bash",
+    "start": "./scripts/start.bash",
     "test": "./scripts/lint.bash && ./scripts/test.bash",
     "test:unit": "./scripts/test.bash :unit",
     "test:unit:coverage": "./scripts/lint.bash && ./scripts/test.bash :coverage"
@@ -39,6 +40,7 @@
     "nyc": "13.1.0"
   },
   "dependencies": {
-    "chai-as-promised": "^7.1.1"
+    "chai-as-promised": "^7.1.1",
+    "stoppable": "^1.1.0"
   }
 }
