@@ -3,9 +3,30 @@
 
 const http = require('http');
 const stoppable = require('stoppable');
+const net = require('net');
+const checkIpAddressBlockedConstructor = require('./check-address-blocked');
+
+const checkIpAddressBlocked = checkIpAddressBlockedConstructor();
 
 function httpResponseHandler(req, res) {
-	res.write('OK');
+	if (req.method !== 'GET') {
+		res.statusCode = 405;
+		res.end();
+		return;
+	}
+
+	const ipAddress = req.url.substr(1);
+
+	if (!net.isIPv4(ipAddress)) {
+		res.statusCode = 400;
+		res.end('Invalid ip address provided');
+		return;
+	}
+
+	const result = checkIpAddressBlocked(ipAddress);
+
+	res.setHeader('Content-Type', 'application/json');
+	res.write(JSON.stringify(result));
 	res.end();
 }
 
