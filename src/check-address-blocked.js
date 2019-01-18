@@ -1,7 +1,8 @@
 'use strict';
 
-const net = require('net');
 const ipAddr = require('ip6addr');
+const net = require('net');
+const binarySearch = require('./binary-search');
 const InvalidAddress = require('./error/invalid-address');
 
 const addresses = [
@@ -22,8 +23,7 @@ module.exports = () => {
 
 		const addressNumber = ipAddr.parse(address).toLong();
 
-		// TODO replace with bianry search
-		const result = addresses.find((range) => addressNumber >= range.start && addressNumber <= range.end);
+		const result = binarySearch(addresses, addressNumber);
 		if (result.blocked) {
 			return {
 				status: true,
