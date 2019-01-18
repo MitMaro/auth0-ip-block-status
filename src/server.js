@@ -3,7 +3,6 @@
 
 const http = require('http');
 const stoppable = require('stoppable');
-const net = require('net');
 const checkIpAddressBlockedConstructor = require('./check-address-blocked');
 
 const checkIpAddressBlocked = checkIpAddressBlockedConstructor();
