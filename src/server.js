@@ -17,15 +17,18 @@ function httpResponseHandler(req, res) {
 
 	const ipAddress = req.url.substr(1);
 
-	if (!net.isIPv4(ipAddress)) {
-		res.statusCode = 400;
-		res.end('Invalid ip address provided');
-		return;
-	}
-
-	const result = checkIpAddressBlocked(ipAddress);
-
 	res.setHeader('Content-Type', 'application/json');
+	let result;
+	let statusCode;
+	try {
+		result = checkIpAddressBlocked(ipAddress);
+		statusCode = 200;
+	}
+	catch (err) {
+		result = {error: err.message};
+		statusCode = err.type === 'InvalidAddress' ? 400 : 500;
+	}
+	res.statusCode = statusCode;
 	res.write(JSON.stringify(result));
 	res.end();
 }
