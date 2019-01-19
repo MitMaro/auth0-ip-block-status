@@ -30,6 +30,54 @@ To start the project
 
     npm run start
 
+## Endpoints
+
+### GET `/###.###.###.###`
+
+Returns if the provided IPv4 address is blocked.
+
+#### Response
+
+For a blocked address, the `blocked` status will be `true` and the `source` property will return a list of block lists
+that have the IP address blocked.
+
+```
+{
+    "blocked": true,
+    "source": ["firehol_level1"]
+}
+```
+
+For a allowed address, the `blocked` status will be `false`.
+
+```
+{
+    "blocked":false
+}
+```
+
+### GET `/healthcheck`
+
+Returns some status information on the micro-service. The `time` is the current server time, `filterListCount` is the
+number of IPv4 ranges in the filter list, and `lastUpdate` is the time that the filter list was last updated.
+
+```
+{
+    "time": 1547872250341,
+    "filterListCount": 33685,
+    "lastUpdate": 1547872249578
+}
+```
+
+## Configuration
+
+The service can be configured using environment variables.
+
+| Environment Variable          | Default  | Description |
+|-------------------------------|----------|-------------|
+| `PORT`                        | `3000`   | The port the HTTP server is listening |
+| `FILTER_LIST_UPDATE_INTERVAL` | `300000` | How often that the filter lists are checked for an update, in milliseconds |
+
 ## Debugging
 
 This library uses [debug](https://github.com/visionmedia/debug) to produce debugging output. To enable add
