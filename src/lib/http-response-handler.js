@@ -22,7 +22,7 @@ module.exports = (checkIpAddressBlocked) => {
 			// eslint-disable-next-line no-console
 			console.error(err);
 			result = {error: err.message};
-			statusCode = err.type === 'InvalidAddress' ? 400 : /* istanbul ignore next */ 500;
+			statusCode = err.type === 'InvalidAddress' ? 400 : 500;
 		}
 
 		res.statusCode = statusCode;

@@ -101,6 +101,26 @@ describe('HTTP server', function () {
 		}
 	});
 
+	it('should respond with 500 on other error', async function () {
+		// this test will fail if port 13333 is already in use
+		config.server.port = 13333;
+		checkIpAddressBlocked.match = sinon.stub().throws(new Error('An internal error'));
+		const app = createServer();
+		const server = await app.setup();
+		try {
+			await app.start();
+			const res = await chai.request(server)
+				.get('/1.1.1.1')
+				.set('content-type', 'application/json');
+			expect(res).to.have.status(500);
+			expect(res).to.be.json;
+			expect(res.body.error).to.equal('An internal error');
+		}
+		finally {
+			await app.end();
+		}
+	});
+
 	it('should error if start is called before setup', async function () {
 		const app = createServer();
 		try {
