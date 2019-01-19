@@ -8,6 +8,7 @@ let sigint = false;
 
 const system = bootstrap();
 const httpServer = system.server;
+const downloader = system.downloader;
 
 async function shutdown() {
 	// catch second ctrl+c and force exit
@@ -21,6 +22,7 @@ async function shutdown() {
 	console.log('Use ctrl-c again to force');
 	console.log();
 	try {
+		await downloader.end();
 		await httpServer.end();
 	}
 	catch (error) {
@@ -31,11 +33,14 @@ async function shutdown() {
 async function start() {
 	try {
 		try {
+			await downloader.setup();
+			await downloader.start();
 			await httpServer.setup();
 			await httpServer.start();
 		}
 		catch (startError) {
 			console.error(startError);
+			await downloader.end();
 			await httpServer.end();
 			return;
 		}

@@ -1,6 +1,7 @@
 /* eslint-disable no-process-env */
 'use strict';
 
+const ms = require('ms');
 const ConfigError = require('./error/config');
 
 function checkRequired(key, value) {
@@ -40,5 +41,12 @@ module.exports = function getConfig() {
 		server: {
 			port: positiveInteger('PORT', '3000', true),
 		},
+		filterLists: {
+			/* eslint-disable camelcase */
+			firehol_level1: 'https://iplists.firehol.org/files/firehol_level1.netset',
+			firehol_level2: 'https://iplists.firehol.org/files/firehol_level2.netset',
+			/* eslint-enable camelcase */
+		},
+		filterListUpdateInterval: positiveInteger('FILTER_LIST_UPDATE_INTERVAL', ms('5 minutes'), true),
 	};
 };
