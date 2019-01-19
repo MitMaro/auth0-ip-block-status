@@ -3,14 +3,13 @@
 
 const http = require('http');
 const stoppable = require('stoppable');
-const checkIpAddressBlocked = require('./lib/check-address-blocked');
 const httpResponseHandler = require('./lib/http-response-handler');
 
-module.exports = (config) => {
+module.exports = (config, checkIpAddressBlocked) => {
 	let server;
 	return {
 		async setup() {
-			server = stoppable(http.createServer(httpResponseHandler(checkIpAddressBlocked())));
+			server = stoppable(http.createServer(httpResponseHandler(checkIpAddressBlocked)));
 			return server;
 		},
 		async start() {

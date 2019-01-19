@@ -1,32 +1,40 @@
 'use strict';
 
 const http = require('http');
+const sinon = require('sinon');
 const getConfig = require('../../src/config');
-const createServer = require('../../src/server');
+const createCheckAddressBlocked = require('../../src/lib/check-address-blocked');
+const _createServer = require('../../src/server');
 
 describe('HTTP server', function () {
 	let config;
+	let checkIpAddressBlocked;
+
+	function createServer() {
+		return _createServer(config, checkIpAddressBlocked);
+	}
 
 	beforeEach(function () {
 		config = getConfig();
 		config.server.port = undefined;
+		checkIpAddressBlocked = createCheckAddressBlocked();
 	});
 
 	it('should create a HTTP server', async function () {
-		const app = createServer(config);
+		const app = createServer();
 		const server = await app.setup();
 		expect(server).to.be.instanceOf(http.Server);
 	});
 
 	it('should shutdown even if not started', async function () {
-		const app = createServer(config);
+		const app = createServer();
 		return expect(await app.end()).to.be.undefined;
 	});
 
 	it('should listen on provided HTTP port', async function () {
 		// this test will fail if port 13333 is already in use
 		config.server.port = 13333;
-		const app = createServer(config);
+		const app = createServer();
 		const server = await app.setup();
 		try {
 			await app.start();
@@ -40,7 +48,7 @@ describe('HTTP server', function () {
 	it('should respond to valid HTTP request', async function () {
 		// this test will fail if port 13333 is already in use
 		config.server.port = 13333;
-		const app = createServer(config);
+		const app = createServer();
 		const server = await app.setup();
 		try {
 			await app.start();
@@ -59,7 +67,7 @@ describe('HTTP server', function () {
 	it('should respond with 405 on non-GET method', async function () {
 		// this test will fail if port 13333 is already in use
 		config.server.port = 13333;
-		const app = createServer(config);
+		const app = createServer();
 		const server = await app.setup();
 		try {
 			await app.start();
@@ -77,7 +85,7 @@ describe('HTTP server', function () {
 	it('should respond with 400 on invalid IP adddress', async function () {
 		// this test will fail if port 13333 is already in use
 		config.server.port = 13333;
-		const app = createServer(config);
+		const app = createServer();
 		const server = await app.setup();
 		try {
 			await app.start();
@@ -94,7 +102,7 @@ describe('HTTP server', function () {
 	});
 
 	it('should error if start is called before setup', async function () {
-		const app = createServer(config);
+		const app = createServer();
 		try {
 			return expect(app.start()).to.be.rejectedWith('Attempted to call `start` before `setup` was called.');
 		}
@@ -105,7 +113,7 @@ describe('HTTP server', function () {
 
 	it('should error if attempting to bind to invalid port', async function () {
 		config.server.port = 1;
-		const app = createServer(config);
+		const app = createServer();
 		try {
 			await app.setup();
 			return expect(app.start()).to.be.rejectedWith('listen EACCES: permission denied 0.0.0.0:1');

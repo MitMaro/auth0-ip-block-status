@@ -1,13 +1,13 @@
 /* eslint-disable no-console */
 'use strict';
 
-const serverSetup = require('./server');
-const getConfig = require('./config');
+const bootstrap = require('./bootstrap');
 
 const SIGINT_ERROR = 120;
 let sigint = false;
 
-const httpServer = serverSetup(getConfig());
+const system = bootstrap();
+const httpServer = system.server;
 
 async function shutdown() {
 	// catch second ctrl+c and force exit
