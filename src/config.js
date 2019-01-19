@@ -38,7 +38,7 @@ function positiveInteger(key, defaultValue, required, allowZero = false) {
 
 module.exports = function getConfig() {
 	return {
-		server: {
+		httpServer: {
 			port: positiveInteger('PORT', '3000', true),
 		},
 		filterLists: {

@@ -5,7 +5,7 @@ const http = require('http');
 const sinon = require('sinon');
 const getConfig = require('../../src/config');
 const createCheckAddressBlocked = require('../../src/lib/check-address-blocked');
-const _createServer = require('../../src/server');
+const _createServer = require('../../src/http-server');
 
 describe('HTTP server', function () {
 	function createServer(checkIpAddressBlocked = createCheckAddressBlocked()) {

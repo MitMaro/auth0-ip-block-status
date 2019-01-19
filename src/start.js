@@ -7,7 +7,7 @@ const SIGINT_ERROR = 120;
 let sigint = false;
 
 const system = bootstrap();
-const httpServer = system.server;
+const httpServer = system.httpServer;
 const downloader = system.downloader;
 
 async function shutdown() {

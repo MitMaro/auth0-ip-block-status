@@ -30,7 +30,16 @@ To start the project
 
     npm run start
 
-## Endpoints
+## Configuration
+
+The service can be configured using environment variables.
+
+| Environment Variable          | Default  | Description |
+|-------------------------------|----------|-------------|
+| `PORT`                        | `3000`   | The port the HTTP server is listening |
+| `FILTER_LIST_UPDATE_INTERVAL` | `300000` | How often that the filter lists are checked for an update, in milliseconds |
+
+## HTTP Endpoints
 
 ### GET `/###.###.###.###`
 
@@ -68,15 +77,6 @@ number of IPv4 ranges in the filter list, and `lastUpdate` is the time that the 
     "lastUpdate": 1547872249578
 }
 ```
-
-## Configuration
-
-The service can be configured using environment variables.
-
-| Environment Variable          | Default  | Description |
-|-------------------------------|----------|-------------|
-| `PORT`                        | `3000`   | The port the HTTP server is listening |
-| `FILTER_LIST_UPDATE_INTERVAL` | `300000` | How often that the filter lists are checked for an update, in milliseconds |
 
 ## Debugging
 

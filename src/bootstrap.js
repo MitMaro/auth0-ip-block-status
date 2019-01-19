@@ -3,7 +3,7 @@
 const getConfig = require('./config');
 const createCheckIpAddressBlocked = require('./lib/check-address-blocked');
 const FilterListDownloader = require('./lib/filter-lists-downloader');
-const serverSetup = require('./server');
+const httpServerSetup = require('./http-server');
 const downloader = require('./downloader');
 
 module.exports = () => {
@@ -16,7 +16,7 @@ module.exports = () => {
 		config,
 		checkIpAddressBlocked,
 		downloader: downloader(filterListDownloader, checkIpAddressBlocked),
-		server: serverSetup(config, checkIpAddressBlocked),
+		httpServer: httpServerSetup(config, checkIpAddressBlocked),
 	};
 	return system;
 };

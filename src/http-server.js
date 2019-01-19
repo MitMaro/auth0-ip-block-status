@@ -21,8 +21,8 @@ module.exports = (config, checkIpAddressBlocked) => {
 				server.on('error', (err) => {
 					return reject(err);
 				});
-				server.listen(config.server.port, () => {
-					console.log(`Server listening on port ${server.address().port}`);
+				server.listen(config.httpServer.port, () => {
+					console.log(`HTTP server listening on port ${server.address().port}`);
 					return resolve();
 				});
 			});
