@@ -37,6 +37,7 @@ The service can be configured using environment variables.
 | Environment Variable          | Default  | Description |
 |-------------------------------|----------|-------------|
 | `PORT`                        | `3000`   | The port the HTTP server is listening |
+| `GRPC_PORT`                   | `3001`   | The port the gRPC server is listening |
 | `FILTER_LIST_UPDATE_INTERVAL` | `300000` | How often that the filter lists are checked for an update, in milliseconds |
 
 ## HTTP Endpoints
