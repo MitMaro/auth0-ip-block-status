@@ -4,18 +4,20 @@
 const ConfigError = require('./error/config');
 
 function checkRequired(key, value) {
-	if (value === undefined) {
+	if (value === undefined || value === '') {
 		throw new ConfigError(key, 'undefined', 'required');
 	}
 }
 
-function positiveInteger(key, defaultValue, required = false, allowZero = false) {
+function positiveInteger(key, defaultValue, required, allowZero = false) {
 	const value = process.env[key] === undefined ? defaultValue : process.env[key];
 
+	/* istanbul ignore else not used */
 	if (required) {
 		checkRequired(key, value);
 	}
 
+	/* istanbul ignore if not used */
 	if (value === undefined) {
 		return undefined;
 	}
@@ -27,7 +29,7 @@ function positiveInteger(key, defaultValue, required = false, allowZero = false)
 	}
 
 	if (numericValue < 0 || (!allowZero && value === 0)) {
-		throw new ConfigError(key, `${value}`, allowZero ? '>= 0' : '> 0');
+		throw new ConfigError(key, `${value}`, allowZero ? /* istanbul ignore next not used */ '>= 0' : '> 0');
 	}
 
 	return numericValue;

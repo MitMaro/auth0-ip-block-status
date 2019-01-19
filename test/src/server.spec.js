@@ -1,3 +1,4 @@
+/* eslint-disable no-process-env */
 'use strict';
 
 const http = require('http');
@@ -7,18 +8,9 @@ const createCheckAddressBlocked = require('../../src/lib/check-address-blocked')
 const _createServer = require('../../src/server');
 
 describe('HTTP server', function () {
-	let config;
-	let checkIpAddressBlocked;
-
-	function createServer() {
-		return _createServer(config, checkIpAddressBlocked);
+	function createServer(checkIpAddressBlocked = createCheckAddressBlocked()) {
+		return _createServer(getConfig(), checkIpAddressBlocked);
 	}
-
-	beforeEach(function () {
-		config = getConfig();
-		config.server.port = undefined;
-		checkIpAddressBlocked = createCheckAddressBlocked();
-	});
 
 	it('should create a HTTP server', async function () {
 		const app = createServer();
@@ -32,8 +24,7 @@ describe('HTTP server', function () {
 	});
 
 	it('should listen on provided HTTP port', async function () {
-		// this test will fail if port 13333 is already in use
-		config.server.port = 13333;
+		process.env.PORT = 13333;
 		const app = createServer();
 		const server = await app.setup();
 		try {
@@ -46,8 +37,6 @@ describe('HTTP server', function () {
 	});
 
 	it('should respond to valid HTTP request', async function () {
-		// this test will fail if port 13333 is already in use
-		config.server.port = 13333;
 		const app = createServer();
 		const server = await app.setup();
 		try {
@@ -65,8 +54,6 @@ describe('HTTP server', function () {
 	});
 
 	it('should respond with 405 on non-GET method', async function () {
-		// this test will fail if port 13333 is already in use
-		config.server.port = 13333;
 		const app = createServer();
 		const server = await app.setup();
 		try {
@@ -83,8 +70,6 @@ describe('HTTP server', function () {
 	});
 
 	it('should respond with 400 on invalid IP adddress', async function () {
-		// this test will fail if port 13333 is already in use
-		config.server.port = 13333;
 		const app = createServer();
 		const server = await app.setup();
 		try {
@@ -102,10 +87,10 @@ describe('HTTP server', function () {
 	});
 
 	it('should respond with 500 on other error', async function () {
-		// this test will fail if port 13333 is already in use
-		config.server.port = 13333;
-		checkIpAddressBlocked.match = sinon.stub().throws(new Error('An internal error'));
-		const app = createServer();
+		const checkIpAddressBlocked = {
+			match: sinon.stub().throws(new Error('An internal error')),
+		};
+		const app = createServer(checkIpAddressBlocked);
 		const server = await app.setup();
 		try {
 			await app.start();
@@ -132,7 +117,7 @@ describe('HTTP server', function () {
 	});
 
 	it('should error if attempting to bind to invalid port', async function () {
-		config.server.port = 1;
+		process.env.PORT = 1;
 		const app = createServer();
 		try {
 			await app.setup();
@@ -141,5 +126,26 @@ describe('HTTP server', function () {
 		finally {
 			await app.end();
 		}
+	});
+
+	it('should error if process.env.PORT is undefined', function () {
+		process.env.PORT = undefined;
+		expect(() => createServer()).to.throw(
+			'The configuration path, PORT, is expected to be an integer but the value is undefined'
+		);
+	});
+
+	it('should error if process.env.PORT is empty', function () {
+		process.env.PORT = '';
+		expect(() => createServer()).to.throw(
+			'The configuration path, PORT, is expected to be required but the value is '
+		);
+	});
+
+	it('should error if process.env.PORT is negative', function () {
+		process.env.PORT = '-1';
+		expect(() => createServer()).to.throw(
+			'The configuration path, PORT, is expected to be > 0 but the value is -1'
+		);
 	});
 });
