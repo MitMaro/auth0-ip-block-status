@@ -66,4 +66,17 @@ describe('/src/lib/checkAddressIsBlocked', function () {
 			expect(checkAddressIsBlocked.match(ipAddress)).to.deep.equal(result);
 		});
 	});
+
+	it('should track update time', function () {
+		const firstDate = checkAddressIsBlocked.lastUpdatedTime;
+		expect(firstDate).to.be.instanceOf(Date);
+		checkAddressIsBlocked.updateAddresses(addresses);
+		expect(checkAddressIsBlocked.lastUpdatedTime).to.be.instanceOf(Date);
+		expect(checkAddressIsBlocked.lastUpdatedTime.toISOString()).to.not.equal(firstDate.toISOString());
+	});
+
+	it('should get number of address ranges', function () {
+		checkAddressIsBlocked.updateAddresses(addresses);
+		expect(checkAddressIsBlocked.numberOfRanges).to.equal(addresses.length);
+	});
 });

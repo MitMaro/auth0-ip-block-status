@@ -9,6 +9,17 @@ module.exports = (checkIpAddressBlocked) => {
 			return;
 		}
 
+		if (req.url === '/healthcheck') {
+			res.statusCode = 200;
+			res.write(JSON.stringify({
+				time: Date.now(),
+				filterListCount: checkIpAddressBlocked.numberOfRanges,
+				lastUpdate: checkIpAddressBlocked.lastUpdatedTime,
+			}));
+			res.end();
+			return;
+		}
+
 		const ipAddress = req.url.substr(1);
 
 		let result;

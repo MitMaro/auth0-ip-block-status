@@ -53,6 +53,25 @@ describe('HTTP server', function () {
 		}
 	});
 
+	it('should respond to /healthcheck', async function () {
+		const app = createServer();
+		const server = await app.setup();
+		try {
+			await app.start();
+			const res = await chai.request(server)
+				.get('/healthcheck')
+				.set('content-type', 'application/json');
+			expect(res).to.have.status(200);
+			expect(res).to.be.json;
+			expect(res.body).to.have.property('time');
+			expect(res.body).to.have.property('filterListCount');
+			expect(res.body).to.have.property('lastUpdate');
+		}
+		finally {
+			await app.end();
+		}
+	});
+
 	it('should respond with 405 on non-GET method', async function () {
 		const app = createServer();
 		const server = await app.setup();

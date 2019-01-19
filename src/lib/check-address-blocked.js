@@ -7,10 +7,18 @@ const InvalidAddress = require('../error/invalid-address');
 
 module.exports = () => {
 	let addresses = [];
+	let lastUpdated = new Date();
 
 	return {
+		get numberOfRanges() {
+			return addresses.length;
+		},
+		get lastUpdatedTime() {
+			return lastUpdated;
+		},
 		updateAddresses(newAddresses) {
 			addresses = newAddresses;
+			lastUpdated = new Date();
 		},
 		match(address) {
 			if (!net.isIPv4(address)) {
