@@ -20,7 +20,6 @@ module.exports = () => {
 			const addressNumber = ipAddr.parse(address).toLong();
 
 			const result = binarySearch(addresses, addressNumber);
-			// const result = addresses.find((a) => a.start >= addressNumber && a.end <= addressNumber);
 			if (result && result.blocked) {
 				return {
 					blocked: true,
