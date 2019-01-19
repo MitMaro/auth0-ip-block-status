@@ -14,6 +14,27 @@ const EVENT_UPDATE_START = 'event-update-start';
 const EVENT_UPDATE_COMPLETE = 'event-update-complete';
 const EVENT_UPDATE_NO_CHANGE = 'event-update-no-change';
 
+// see: https://github.com/nodejs/node/blob/master/lib/internal/url.js
+// istanbul ignore next
+function urlToOptions(url) {
+	const options = {
+		protocol: url.protocol,
+		hostname: url.hostname.startsWith('[') ? url.hostname.slice(1, -1) : url.hostname,
+		hash: url.hash,
+		search: url.search,
+		pathname: url.pathname,
+		path: `${url.pathname}${url.search}`,
+		href: url.href,
+	};
+	if (url.port !== '') {
+		options.port = Number(url.port);
+	}
+	if (url.username || url.password) {
+		options.auth = `${url.username}:${url.password}`;
+	}
+	return options;
+}
+
 async function getRemoteLocation(location, etag) {
 	debug('starting download of %s', location);
 	return new Promise((resolve, reject) => {
@@ -23,8 +44,7 @@ async function getRemoteLocation(location, etag) {
 			debug('using ETag %s for %s', etag, location);
 			headers['If-None-Match'] = etag;
 		}
-		const options = new URL(location);
-		options.headers = headers;
+		const options = Object.assign(urlToOptions(location), {headers, method: 'GET'});
 		const request = get(options, (res) => {
 			const {statusCode, statusMessage} = res;
 
