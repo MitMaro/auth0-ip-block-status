@@ -4,6 +4,7 @@ const getConfig = require('./config');
 const createCheckIpAddressBlocked = require('./lib/check-address-blocked');
 const FilterListDownloader = require('./lib/filter-lists-downloader');
 const httpServerSetup = require('./http-server');
+const gRPCServerSetup = require('./grpc-server');
 const downloader = require('./downloader');
 
 module.exports = () => {
@@ -16,6 +17,7 @@ module.exports = () => {
 		config,
 		checkIpAddressBlocked,
 		downloader: downloader(filterListDownloader, checkIpAddressBlocked),
+		gRPCServer: gRPCServerSetup(config, checkIpAddressBlocked),
 		httpServer: httpServerSetup(config, checkIpAddressBlocked),
 	};
 	return system;

@@ -78,6 +78,13 @@ number of IPv4 ranges in the filter list, and `lastUpdate` is the time that the 
 }
 ```
 
+## gRPC Service
+
+This project also provides a gRPC service that is provides faster response times for large number of requests from a
+single host.
+
+See [src/protos/ip-address.proto](src/protos/ip-address.proto) for the protofile.
+
 ## Debugging
 
 This library uses [debug](https://github.com/visionmedia/debug) to produce debugging output. To enable add

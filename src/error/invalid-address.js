@@ -1,5 +1,6 @@
 'use strict';
 
+const {status: {INTERNAL}} = require('grpc');
 const RuntimeError = require('./runtime');
 
 class InvalidAddress extends RuntimeError {
@@ -10,6 +11,8 @@ class InvalidAddress extends RuntimeError {
 			cause
 		);
 		this.value = value;
+		this.code = 400;
+		this.status = INTERNAL;
 	}
 }
 

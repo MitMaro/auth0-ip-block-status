@@ -47,7 +47,9 @@
     "sinon-chai": "^3.3.0"
   },
   "dependencies": {
+    "@grpc/proto-loader": "^0.4.0",
     "debug": "^4.1.1",
+    "grpc": "^1.18.0",
     "ip6addr": "^0.2.2",
     "ms": "^2.1.1",
     "stoppable": "^1.1.0"

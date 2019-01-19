@@ -41,6 +41,9 @@ module.exports = function getConfig() {
 		httpServer: {
 			port: positiveInteger('PORT', '3000', true),
 		},
+		gRPCServer: {
+			port: positiveInteger('GRPC_PORT', '3001', true),
+		},
 		filterLists: {
 			/* eslint-disable camelcase */
 			firehol_level1: 'https://iplists.firehol.org/files/firehol_level1.netset',

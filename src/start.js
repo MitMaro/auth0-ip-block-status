@@ -7,8 +7,11 @@ const SIGINT_ERROR = 120;
 let sigint = false;
 
 const system = bootstrap();
-const httpServer = system.httpServer;
-const downloader = system.downloader;
+const {
+	downloader,
+	gRPCServer,
+	httpServer,
+} = system;
 
 async function shutdown() {
 	// catch second ctrl+c and force exit
@@ -24,6 +27,7 @@ async function shutdown() {
 	try {
 		await downloader.end();
 		await httpServer.end();
+		await gRPCServer.end();
 	}
 	catch (error) {
 		console.error(error);
@@ -37,11 +41,14 @@ async function start() {
 			await downloader.start();
 			await httpServer.setup();
 			await httpServer.start();
+			await gRPCServer.setup();
+			await gRPCServer.start();
 		}
 		catch (startError) {
 			console.error(startError);
 			await downloader.end();
 			await httpServer.end();
+			await gRPCServer.end();
 			return;
 		}
 	}
