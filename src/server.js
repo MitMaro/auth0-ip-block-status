@@ -55,7 +55,8 @@ module.exports = (config) => {
 		},
 		async end() {
 			if (server === undefined) {
-				throw new Error('Attempted to call `start` before `setup` was called.');
+				// nothing to do
+				return undefined;
 			}
 			return new Promise((resolve) => {
 				if (server === undefined) {
