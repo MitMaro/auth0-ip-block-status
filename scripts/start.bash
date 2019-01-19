@@ -14,5 +14,5 @@ if yn "${WATCH:-}"; then
 		--debounce 750 \
 		-c 'WATCH=false ./scripts/start.bash'
 else
-	process-run "node $@ src/start.js" "service" 'build/'
+	process-run "node $@ src/start.js" "service" 'build'
 fi
