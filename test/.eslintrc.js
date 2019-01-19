@@ -7,4 +7,7 @@ module.exports = {
 		'mitmaro/config/mocha',
 		'mitmaro/config/chai',
 	],
+	globals: {
+		chai: true,
+	}
 };
