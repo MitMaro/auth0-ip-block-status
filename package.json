@@ -18,7 +18,7 @@
     "start:watch": "WATCH=true ./scripts/start.bash",
     "test": "./scripts/lint.bash && ./scripts/test.bash",
     "test:unit": "./scripts/test.bash :unit",
-    "test:unit:coverage": "./scripts/lint.bash && ./scripts/test.bash :coverage"
+    "test:unit:coverage": "./scripts/test.bash :coverage"
   },
   "author": "Tim Oram <dev@mitmaro.ca>",
   "contributors": [
